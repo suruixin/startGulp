@@ -1,2 +1,3 @@
-console.log('this is bs')
-console.log('11111111')
+module.exports = function (i) {
+  console.log(i)
+}

@@ -5,9 +5,10 @@ const vinylPaths = require('vinyl-paths'); // 计算管道
 const less = require('gulp-less');
 const babel = require("gulp-babel"); // babel
 const uglify = require('gulp-uglify'); // 压缩js
+const concat = require('gulp-concat'); // 合并js
 const rev = require('gulp-rev'); // 文件改名
 const revCollector = require('gulp-rev-collector'); // 文件改名后做匹配
-const browserify = require('gulp-browserify');
+const bro = require('gulp-bro');
 const htmlmin = require('gulp-htmlmin'); // 压缩html
 const htmlreplace = require('gulp-html-replace'); // html中引入文件
 const path = require('path');
@@ -19,16 +20,14 @@ gulp.task('server', function () {
     port: config.port || 3006,
     host: config.host || 'localhost',
     livereload: true,
-    root: './'
+    root: './dist'
   })
 });
-
-gulp.task('ces', ['replace'])
-
+require("@babel/polyfill")
 gulp.task('html', function () {
   gulp.src(['dist/*.json', '*.html'])
     .pipe(htmlreplace({
-      'js': './dist/js/a.js'
+      'js': './js/main.js'
     }))
     .pipe(connect.reload())
     .pipe(revCollector({
@@ -39,7 +38,6 @@ gulp.task('html', function () {
     }))
     .pipe(htmlmin({ collapseWhitespace: true }))
     .pipe(gulp.dest('dist'));
-  console.log('\x1b[32m html upload \x1b[0m')
 });
 
 gulp.task('less', function () {
@@ -54,12 +52,9 @@ gulp.task('less', function () {
 gulp.task('js', function () {
   return gulp.src('src/**/*.js')
     .pipe(babel({
-      presets: ['@babel/env']
+      "presets" : ["@babel/preset-env"]
     }))
     .pipe(connect.reload())
-    .pipe(browserify({
-      insertGlobals : true
-    }))
     .pipe(uglify({
       // output: {
       //   comments: /^!/
@@ -67,6 +62,8 @@ gulp.task('js', function () {
     }).on('error', function (e) {
       console.log(e);
     }))
+    .pipe(bro())
+    .pipe(concat('js/main.js'))
     .pipe(gulp.dest('dist'))
     .pipe(vinylPaths(del))
     .pipe(rev())
@@ -87,7 +84,7 @@ gulp.task('clear', function (cb) {
 });
 
 gulp.task('watch', function () {
-  gulp.watch(['./index.html'], ['html']);
+  gulp.watch(['./dist/index.html'], ['html']);
   gulp.watch(['./src/**/**.less'], ['less']);
   gulp.watch(['./src/**/**.js'], ['js']);
 });

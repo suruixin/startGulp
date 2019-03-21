@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@babel/polyfill": "^7.4.0",
     "gulp": "3.9.0",
     "gulp-htmlmin": "^5.0.1",
     "gulp-less": "^4.0.1",
@@ -19,13 +20,15 @@
     "vinyl-paths": "^2.1.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.2.3",
     "@babel/core": "^7.3.4",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/plugin-transform-modules-commonjs": "^7.2.0",
+    "@babel/plugin-transform-modules-systemjs": "^7.4.0",
     "@babel/preset-env": "^7.3.4",
     "del": "^4.0.0",
     "gulp-babel": "^8.0.0",
-    "gulp-browserify": "^0.5.1",
+    "gulp-bro": "^1.0.3",
     "gulp-concat": "^2.6.1",
     "gulp-connect": "^5.7.0",
     "gulp-html-replace": "^1.6.2",

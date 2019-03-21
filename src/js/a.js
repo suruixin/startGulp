@@ -1,4 +1,5 @@
-import b from './c/b'
+const b = require('./c/b')
 let a = () => {
-  return b
+  b(1)
 }
+a()
